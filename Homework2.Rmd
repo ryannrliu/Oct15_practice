@@ -59,6 +59,7 @@ The distribution of the graph indicates that there is a somewhat negative relati
 # **5. Conclusion**
 In conclusion, I found that India had the most cases of leprosy; however, they had a higher population than some countries/regions, so it was not a proper comparison to analyze leprosy cases. When looking at the cases of leprosy per 100K people, I was able to see that the average number of leprosy cases was around 1.33 cases. Africa had the highest median number of cases out of all the regions. 
 I found that GDP had little effect on the number of cases, with the exception of a few outliers. 
+I am editing this file to practice the Oct15 lecture. 
 
 For more information about leprosy:
 [International Leprosy Association](https://leprosyhistory.org/)
