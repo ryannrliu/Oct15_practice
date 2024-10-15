@@ -1,0 +1,64 @@
+---
+title: 'Homework 2: Leprosy Cases'
+author: "Ryann Liu"
+date: "2024-09-18"
+output: 
+html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.height=3, fig.width=4, warning=FALSE, tidy=TRUE, tidy.opts=list(width.cutoff=60))
+```
+
+***
+
+# **Introduction**
+
+I will be investigating leprosy cases within 5 regions (Africa, Americas, Asia/Pacific, Europe, and the Middle East) during the year 2022. I am going to examine which regions have more cases, as well as how population may affect the number of cases. In order to fairly examine this data, I will look at the number of leprosy cases per 100K people for each region. I will also investigate whether or not GDP has an affect on the number of leprosy cases within a region. 
+
+# **1. Country with the Highest Number of Leprosy Cases in 2022**
+
+```{r}
+leprosy <- read.csv('Homework2_leprosy.csv')
+```
+The country with the highest number of leprosy cases is `r leprosy[which(leprosy$New_Cases == max(leprosy$New_Cases, na.rm=TRUE)), 1]`. This is not a fair comparison because it doesn't take into account the difference of populations. To properly compare the prevalence of the disease, we must examine the percentages. 
+
+# **2. Leprosy Cases per 100K People**
+```{r}
+population <- leprosy$Population/100000
+leprosy$Cases_per100k <- leprosy$New_Cases/population
+
+boxplot(leprosy$Cases_per100k,main='Leprosy Cases per 100K People',xlab='# of Cases', pch=20, horizontal=TRUE, col='pink')
+```
+
+The average number of cases from all countries was `r round(mean(leprosy$Cases_per100k, na.rm=TRUE), 2)`. The standard deviation of cases was `r round(sd(leprosy$Cases_per100k, na.rm=TRUE), 2)`. The five number summary of the cases is as follows: `r round(fivenum(leprosy$Cases_per100k), 2)` (min, Q1, median, Q3, max).
+The distribution is skewed to the right with a few outliers. 
+
+# **3. Leprosy Cases by Region**
+```{r}
+boxplot(leprosy$Cases_per100k~leprosy$Region, main='Cases of Leprosy per Region', ylab='Region', xlab='# of Cases', na.rm=TRUE, horizontal = TRUE, pch=20, col='pink')
+```
+
+Region | # of Countries | Median Cases per 100K
+------------------------|------------------------ | -----------------------
+Africa | `r nrow(leprosy[leprosy$Region=='Africa',])` |  `r round(median(leprosy$Cases_per100k[which(leprosy$Region == 'Africa')], na.rm=TRUE), 2)`|
+Americas | `r nrow(leprosy[leprosy$Region=='Americas',])` | `r round(median(leprosy$Cases_per100k[which(leprosy$Region == 'Americas')], na.rm=TRUE), 2)`|
+Asia/Pacific | `r nrow(leprosy[leprosy$Region=='Asia/Pacific',])` | `r round(median(leprosy$Cases_per100k[which(leprosy$Region == 'Asia/Pacific')], na.rm=TRUE), 2)`|
+Europe | `r nrow(leprosy[leprosy$Region=='Europe',])` | `r round(median(leprosy$Cases_per100k[which(leprosy$Region == 'Europe')], na.rm=TRUE), 2)`|
+Middle East | `r nrow(leprosy[leprosy$Region=='Middle East',])` | `r round(median(leprosy$Cases_per100k[which(leprosy$Region == 'Middle East')], na.rm=TRUE), 2)`|
+
+Africa has the highest median number of leprosy cases, with Europe having the smallest. The Middle East and Africa had a high outlier, and Asia/Pacific had no outliers. All regions distribution was relatively right skewed. 
+
+# **4. Leprosy Cases per 100K vs. GDP**
+```{r}
+plot(leprosy$Cases_per100k,leprosy$GDP_billions,main='Cases per 100K and GDP',xlab='Cases of Leprosy (per 100K)',ylab='GDP (billions)',pch=20, col='#ef16b350')
+```
+
+The distribution of the graph indicates that there is a somewhat negative relationship between the two variables. As GDP decreases, the cases of leprosy seem to increase; however, most of the cases seem to stay the same with GDP. There are a few outliers that affect the summary. The correlation coefficient is `r round(cor(leprosy$Cases_per100k,leprosy$GDP_billions, use = "complete.obs"), 2)`. Because the correlation is weak, there is not a strong relationship between GDP and leprosy cases. 
+
+# **5. Conclusion**
+In conclusion, I found that India had the most cases of leprosy; however, they had a higher population than some countries/regions, so it was not a proper comparison to analyze leprosy cases. When looking at the cases of leprosy per 100K people, I was able to see that the average number of leprosy cases was around 1.33 cases. Africa had the highest median number of cases out of all the regions. 
+I found that GDP had little effect on the number of cases, with the exception of a few outliers. 
+
+For more information about leprosy:
+[International Leprosy Association](https://leprosyhistory.org/)
